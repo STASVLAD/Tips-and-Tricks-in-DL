@@ -107,6 +107,7 @@ class LISADataset(Dataset):
             else:
                 affect.append(True)
 
+        # coords = torch.as_tensor(coords, dtype=torch.float32)
         sample = {
             "image": image,
             "coords": np.array(coords),
@@ -115,9 +116,7 @@ class LISADataset(Dataset):
         }
 
         if self.transform:
-            sample["image"] = self.transform(sample["image"])
-            sample["coords"] = self.transform(sample["coords"])
-
+            sample = self.transform(sample)
         return sample
 
     def __len__(self):
