@@ -3,6 +3,8 @@ import time
 from pathlib import Path
 
 from collections import defaultdict
+import os
+import json
 
 import cv2
 import torch
@@ -106,7 +108,8 @@ def detect(save_img=False):
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     if save_dict:
-                        boxes_dict[path].append(xyxy)
+                        xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()
+                        boxes_dict[path].append(xywh)
 
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
@@ -147,7 +150,7 @@ def detect(save_img=False):
         print(f"Results saved to {save_dir}{s}")
 
     print(f'Done. ({time.time() - t0:.3f}s)')
-    return boxes
+    return boxes_dict, save_path
 
 
 if __name__ == '__main__':
@@ -179,4 +182,6 @@ if __name__ == '__main__':
                 detect()
                 strip_optimizer(opt.weights)
         else:
-            detect()
+            boxes_dict, save_path = detect()
+            with open(os.path.split(save_path)[0] + '/boxes.json', 'a') as f:
+                json.dump(boxes_dict, f, indent=4)
