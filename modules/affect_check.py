@@ -1,4 +1,4 @@
-def area_check(box, img_size=(1920, 1080), x_bound=0.15, y_bound=0.65):
+def affect_check(box, img_size=(1920, 1080), x_bound=0.15, y_bound=0.65):
     assert len(box) == 4
     
 
