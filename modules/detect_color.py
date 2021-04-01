@@ -21,7 +21,7 @@ def detect_color(img, Threshold=0.01):
     mask2 = cv2.inRange(img_hsv, lower_yellow, upper_yellow)
 
     # defining the Range of green color
-    lowew_green = np.array([41, 52, 72])
+    lowew_green = np.array([40, 30, 72])
     upper_green = np.array([102, 255, 255])
     mask3 = cv2.inRange(img_hsv, lowew_green, upper_green)
 
@@ -37,7 +37,6 @@ def detect_color(img, Threshold=0.01):
     rates = [rate_red, rate_yellow, rate_green]
     colors = ['red', 'yellow', 'green']
     rate_max = max(rates)
-
     if rate_max > Threshold:
         return colors[rates.index(rate_max)]
     else:
