@@ -1,7 +1,11 @@
-def affect_check(x_l, x_r, img_size):
-    x_thr_r = 0.6 * img_size[1]
-    x_thr_l = 0.4 * img_size[1]
-    if x_l >= x_thr_r or x_r <= x_thr_l:
-        return True
+def area_check(box, img_size=(1920, 1080), x_bound=0.15, y_bound=0.65):
+    assert len(box) == 4
+    
+
+    x_thr = x_bound * img_size[0]
+    y_thr = y_bound * img_size[1]
+    
+    if (box[0] < x_thr or box[2] > (img_size[0] - x_thr)) or box[3] > y_thr:
+        return False       
     else:
-        return False
+        return True
